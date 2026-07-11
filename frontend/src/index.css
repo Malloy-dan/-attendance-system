@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  @apply bg-blush-50 text-plum-900 font-body antialiased;
+  background-image:
+    radial-gradient(circle at 15% 8%, rgba(214, 51, 108, 0.08), transparent 40%),
+    radial-gradient(circle at 90% 85%, rgba(214, 51, 108, 0.06), transparent 45%);
+}
+
+::selection {
+  @apply bg-rose-200 text-plum-900;
+}
+
+/* Perforated "ticket" edge used on the registration card */
+.ticket-perforation {
+  background-image: radial-gradient(circle, transparent 4px, #FFF6FA 4.5px);
+  background-size: 16px 16px;
+  background-position: -4px center;
+  height: 16px;
+}
+
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 focus:ring-offset-blush-50;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+  }
+}
