@@ -14,7 +14,10 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
     try {
-      const { data } = await client.post("/auth/login/", { username, password });
+      const { data } = await client.post("/auth/login/", {
+        username: username.trim(),
+        password: password.trim(),
+      });
       localStorage.setItem("access_token", data.access);
       localStorage.setItem("refresh_token", data.refresh);
       localStorage.setItem("role", data.role);
