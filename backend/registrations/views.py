@@ -88,6 +88,16 @@ class RegistrationListView(generics.ListAPIView):
     ordering_fields = ["created_at", "full_name"]
 
 
+class RegistrationDeleteView(generics.DestroyAPIView):
+    """
+    Admin/dev: remove a single registration (e.g. a duplicate, a mistake,
+    or someone who shouldn't have checked in). This frees up their device
+    fingerprint too, so they could register again for the same event.
+    """
+    queryset = Registration.objects.all()
+    permission_classes = [permissions.IsAuthenticated, IsAdminOrDev]
+
+
 class RegistrationExportView(APIView):
     """Admin/dev: download the attendee list as CSV for printing/records."""
     permission_classes = [permissions.IsAuthenticated, IsAdminOrDev]

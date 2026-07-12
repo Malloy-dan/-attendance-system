@@ -55,6 +55,14 @@ export default function AdminDashboard() {
     window.URL.revokeObjectURL(url);
   }
 
+  async function deleteRegistration(r) {
+    if (!window.confirm(`Remove ${r.full_name} from this event's check-in list? They'll be able to scan and register again if needed.`)) {
+      return;
+    }
+    await client.delete(`/registrations/${r.id}/`);
+    setRegistrations((prev) => prev.filter((reg) => reg.id !== r.id));
+  }
+
   return (
     <DashboardLayout
       subtitle="Administrator"
@@ -112,19 +120,20 @@ export default function AdminDashboard() {
               <th className="px-4 py-3 font-semibold">Program</th>
               <th className="px-4 py-3 font-semibold">Level</th>
               <th className="px-4 py-3 font-semibold">Checked in</th>
+              <th className="px-4 py-3 font-semibold" />
             </tr>
           </thead>
           <tbody>
             {loading && (
               <tr>
-                <td colSpan={9} className="px-4 py-8 text-center text-plum-400">
+                <td colSpan={10} className="px-4 py-8 text-center text-plum-400">
                   Loading…
                 </td>
               </tr>
             )}
             {!loading && registrations.length === 0 && (
               <tr>
-                <td colSpan={9} className="px-4 py-8 text-center text-plum-400">
+                <td colSpan={10} className="px-4 py-8 text-center text-plum-400">
                   No registrations yet for this event.
                 </td>
               </tr>
@@ -142,6 +151,14 @@ export default function AdminDashboard() {
                   <td className="px-4 py-3">{r.academic_year_display}</td>
                   <td className="px-4 py-3 text-plum-400">
                     {new Date(r.created_at).toLocaleString()}
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <button
+                      onClick={() => deleteRegistration(r)}
+                      className="focus-ring text-xs font-medium border border-red-200 text-red-600 rounded-lg px-2.5 py-1 hover:bg-red-50"
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}

@@ -76,6 +76,14 @@ function EventsPanel() {
     loadEvents();
   }
 
+  async function deleteEvent(ev) {
+    if (!window.confirm(`Delete "${ev.name}" and its QR code? This also removes all ${ev.registration_count} registration(s) for this event. This can't be undone.`)) {
+      return;
+    }
+    await client.delete(`/events/${ev.id}/`);
+    loadEvents();
+  }
+
   return (
     <div className="grid gap-6 md:grid-cols-[320px_1fr]">
       <form onSubmit={handleCreate} className="bg-white rounded-2xl border border-blush-200 p-5 h-fit space-y-4">
@@ -129,12 +137,20 @@ function EventsPanel() {
                 {window.location.origin}/register/{ev.slug}
               </p>
             </div>
-            <button
-              onClick={() => toggleActive(ev)}
-              className="focus-ring text-sm font-medium border border-blush-200 rounded-lg px-3 py-1.5 hover:bg-blush-50 shrink-0"
-            >
-              {ev.is_active ? "Close" : "Reopen"}
-            </button>
+            <div className="flex flex-col gap-2 shrink-0">
+              <button
+                onClick={() => toggleActive(ev)}
+                className="focus-ring text-sm font-medium border border-blush-200 rounded-lg px-3 py-1.5 hover:bg-blush-50"
+              >
+                {ev.is_active ? "Close" : "Reopen"}
+              </button>
+              <button
+                onClick={() => deleteEvent(ev)}
+                className="focus-ring text-sm font-medium border border-red-200 text-red-600 rounded-lg px-3 py-1.5 hover:bg-red-50"
+              >
+                Delete
+              </button>
+            </div>
           </div>
         ))}
         {events.length === 0 && (

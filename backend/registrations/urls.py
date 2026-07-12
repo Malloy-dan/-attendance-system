@@ -7,7 +7,9 @@ from .views import (
     CheckDeviceView,
     RegistrationCreateView,
     RegistrationListView,
+    RegistrationDeleteView,
     RegistrationExportView,
+    RegistrationExportXlsxView,
 )
 
 router = DefaultRouter()
@@ -19,5 +21,7 @@ urlpatterns = [
     path("public/check-device/", CheckDeviceView.as_view(), name="check-device"),
     path("public/register/", RegistrationCreateView.as_view(), name="register-create"),
     path("registrations/", RegistrationListView.as_view(), name="registration-list"),
+    path("registrations/<int:pk>/", RegistrationDeleteView.as_view(), name="registration-delete"),
     path("registrations/export/", RegistrationExportView.as_view(), name="registration-export"),
+    path("registrations/export-xlsx/", RegistrationExportXlsxView.as_view(), name="registration-export-xlsx"),
 ]
